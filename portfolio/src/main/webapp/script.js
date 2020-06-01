@@ -25,4 +25,11 @@ function addRandomGreeting() {
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
+};
+
+async function getDataServletText() {
+    const response = await fetch('/data');
+    const text = await response.text();
+    document.getElementById('text-holder').innerText = text;
 }
+
