@@ -27,9 +27,16 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 };
 
+// Tutorial Step 2.
 async function getDataServletText() {
+
+    // Fetches data from DataServlet.java
     const response = await fetch('/data');
+
+    // Returns text from the data fetched from the servlet.
     const text = await response.text();
+
+    // Adds text to page
     document.getElementById('text-holder').innerText = text;
 }
 
