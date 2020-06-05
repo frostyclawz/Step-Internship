@@ -48,7 +48,7 @@ async function getDataServletText() {
 async function getDataJson() {
     const data_response = await fetch('/data');
 
-    // It is an array here...
+    // Data_response returns an array to be parsed.
     const data_text = await data_response.json();
  
     // Loops over the returned array to display the messages on the webpage
@@ -60,5 +60,4 @@ async function getDataJson() {
 
     // Adds the text to the webpage
     document.getElementById('json-holder').innerHTML = html;
-
 }
