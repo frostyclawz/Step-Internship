@@ -26,12 +26,10 @@ import java.util.Arrays;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  // Initializes an ArrayList... Let's look more at this tomorrow.  
   private ArrayList<String> messages = 
-  new ArrayList<String>(Arrays.asList("Hello", "This is a message.", "I am a machine..."));
+  new ArrayList<String>();
 
   private static final String CONTENT_TYPE = "application/json;";
-
 
   private String convertToJson(ArrayList<String> comments) {
     Gson gson = new Gson();
@@ -39,9 +37,26 @@ public class DataServlet extends HttpServlet {
     return json;
   }
 
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
+  }
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType(CONTENT_TYPE);
     response.getWriter().println(convertToJson(messages));
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String text = getParameter(request, "text-input", "");
+    messages.add(text);
+    response.setContentType("text/html;");
+    response.getWriter().println("Your response has been recorded.");
+    response.sendRedirect("/home.html");
   }
 }
