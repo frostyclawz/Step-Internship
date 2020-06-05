@@ -10,9 +10,9 @@
         <h1>Vincent's Portfolio</h1>
         </br>
         <div id="links">
-            <ul>
-                <li><a href="gaming.html">Gaming</a></li>
-                <li><a href="astronomy.html">Astronomy</a></li>
+            <ul id="ul">
+                <li id="li"><a href="gaming.html">Gaming</a></li>
+                <li id="li"><a href="astronomy.html">Astronomy</a></li>
             </ul>
         </div>
         </br>
@@ -31,10 +31,12 @@
             <p>Click here to get a random message:</p>
             <button onclick="addRandomGreeting()">Hello</button>
             <div id="greeting-container"></div>
-            </br>
             <p>Click here to get a message from the server:</p>
-            <button onclick ="getDataServletText()">Click Me</button>
+            <button onclick="getDataServletText()">Click Me</button>
             <div id="text-holder"></div>
+            </br>
+            <button onclick="getDataJson()">Click for messages:</button>
+            <ul id="json-holder"></ul>
         </div>
     </body>
 </html>

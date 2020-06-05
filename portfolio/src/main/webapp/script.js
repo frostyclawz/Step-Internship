@@ -41,3 +41,23 @@ async function getDataServletText() {
     document.getElementById('text-holder').innerText = text;
 }
 
+/**
+ * Function that takes a json from DataServlet.java and parses the text to 
+ * print on the page
+ */
+async function getDataJson() {
+    const data_response = await fetch('/data');
+
+    // Data_response returns an array to be parsed.
+    const data_text = await data_response.json();
+ 
+    // Loops over the returned array to display the messages on the webpage
+    var html = '';
+    for(var i = 0; i < data_text.length; i++) {
+      html += '<li>' + data_text[i] + '</li>';
+      html += '\n';
+    }
+
+    // Adds the text to the webpage
+    document.getElementById('json-holder').innerHTML = html;
+}
