@@ -25,14 +25,24 @@ import java.util.Arrays;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
   private static final String CONTENT_TYPE = "application/json;";
-  private static final String Text_Input = "text-input";
-  private static final String redirect = "/home.html";
+  private static final String TEXT_INPUT = "text-input";
+  private static final String REDIRECT = "/home.html";
+
+  private String convertToJson(ArrayList<String> comments) {
+    Gson gson = new Gson();
+    String json = gson.toJson(comments);
+    return json;
+  }
+
 
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
@@ -44,7 +54,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String text = getParameter(request, Text_Input, "");
+    String text = getParameter(request, TEXT_INPUT, "");
     
     Entity commentEntity = new Entity("comment");
     commentEntity.setProperty("comment", text);
@@ -52,6 +62,26 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
 
-    response.sendRedirect(redirect);
+    response.sendRedirect(REDIRECT);
   }
+
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Query query = new Query("comment");
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery comments = datastore.prepare(query);
+
+    ArrayList<String> comments_list = new ArrayList();
+    for (Entity commentEntity : comments.asIterable()) {
+      String comment = (String) commentEntity.getProperty("comment");
+
+      comments_list.add(comment);
+    }
+
+    Gson gson = new Gson();
+
+    response.setContentType(CONTENT_TYPE);
+    response.getWriter().println(convertToJson(comments_list));
+  }  
+
 }
