@@ -67,15 +67,22 @@ public class DataServlet extends HttpServlet {
 
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("comment");
+    int commentNumber = Integer.parseInt(request.getParameter("comment-number"));
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery comments = datastore.prepare(query);
 
     ArrayList<String> comments_list = new ArrayList();
+    int counter = 0;
     for (Entity commentEntity : comments.asIterable()) {
       String comment = (String) commentEntity.getProperty("comment");
 
       comments_list.add(comment);
+      counter += 1;
+
+      if (counter == commentNumber) {
+          break;
+      }
     }
 
     Gson gson = new Gson();
