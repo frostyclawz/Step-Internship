@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
 /**
  * Adds a random greeting to the page.
  */
@@ -46,8 +49,7 @@ async function getDataServletText() {
  * print on the page
  */
 async function getDataJson() {
-
-    var comment_number = document.getElementById('comment-number').value;
+    var numberOfComments = document.getElementById('comment-number').value;
     const data_response = await fetch('/data?comment-number=' + comment_number);
 
 
@@ -56,7 +58,7 @@ async function getDataJson() {
  
     // Loops over the returned array to display the messages on the webpage
     var html = '';
-    for(var i = 0; i < comment_number; i++) {
+    for(var i = 0; i < numberOfComments; i++) {
       html += '<li>' + data_text[i] + '</li>';
       html += '\n';
     }
@@ -65,11 +67,40 @@ async function getDataJson() {
     document.getElementById('json-holder').innerHTML = html;
 }
 
- async function deleteComments() {
-     const data_post = await fetch('/delete-data', {method:'POST'});
+async function deleteComments() {
+    const data_post = await fetch('/delete-data', {method:'POST'});
 
-     // Removes comments from the webpage.
-     document.getElementById('json-holder').innerHTML = ''
+    // Removes comments from the webpage.
+    document.getElementById('json-holder').innerHTML = ''
 
 
+}
+
+function drawChart() {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Solar System');
+    data.addColumn('number', 'Number of Planets');
+        data.addRows([
+            ['Sol', 8],
+            ['Gliese 581', 3],
+            ['TRAPPIST-1', 7]
+        ]);
+    
+    const options = {
+        'title': 'List of some Planetary Systems',
+        'chart area': {width: '50%'},
+        'hAxis' : {
+            'title' : 'Number of Planets',
+            'minValue' : 0
+        },
+        'vAxis' : {
+            'title' : 'Name of Star System'
+        },
+        'width': 500,
+        'height': 400
+    };
+
+    const chart = new google.visualization.BarChart (
+        document.getElementById('chart-holder'));
+    chart.draw(data, options);
 }
