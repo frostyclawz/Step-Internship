@@ -67,7 +67,7 @@ public class DataServlet extends HttpServlet {
 
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("comment");
-    int commentNumber = Integer.parseInt(request.getParameter("comment-number"));
+    int numComments = Integer.parseInt(request.getParameter("comment-number"));
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery comments = datastore.prepare(query);
@@ -80,7 +80,7 @@ public class DataServlet extends HttpServlet {
       comments_list.add(comment);
       counter += 1;
 
-      if (counter == commentNumber) {
+      if (counter == numComments) {
           break;
       }
     }
