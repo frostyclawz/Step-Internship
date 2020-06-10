@@ -88,11 +88,19 @@ function drawChart() {
     
     const options = {
         'title': 'List of some Planetary Systems',
+        'chart area': {width: '50%'},
+        'hAxis' : {
+            'title' : 'Number of Planets',
+            'minValue' : 0
+        },
+        'vAxis' : {
+            'title' : 'Name of Star System'
+        },
         'width': 500,
         'height': 400
     };
 
-    const chart = new google.visualization.PieChart (
+    const chart = new google.visualization.BarChart (
         document.getElementById('chart-holder'));
     chart.draw(data, options);
 }
