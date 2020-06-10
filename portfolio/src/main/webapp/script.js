@@ -46,18 +46,30 @@ async function getDataServletText() {
  * print on the page
  */
 async function getDataJson() {
-    const data_response = await fetch('/data');
+
+    var comment_number = document.getElementById('comment-number').value;
+    const data_response = await fetch('/data?comment-number=' + comment_number);
+
 
     // Data_response returns an array to be parsed.
     const data_text = await data_response.json();
  
     // Loops over the returned array to display the messages on the webpage
     var html = '';
-    for(var i = 0; i < data_text.length; i++) {
+    for(var i = 0; i < comment_number; i++) {
       html += '<li>' + data_text[i] + '</li>';
       html += '\n';
     }
 
     // Adds the text to the webpage
     document.getElementById('json-holder').innerHTML = html;
+}
+
+ async function deleteComments() {
+     const data_post = await fetch('/delete-data', {method:'POST'});
+
+     // Removes comments from the webpage.
+     document.getElementById('json-holder').innerHTML = ''
+
+
 }

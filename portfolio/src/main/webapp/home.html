@@ -35,17 +35,23 @@
             <button onclick="getDataServletText()">Click Me</button>
             <div id="text-holder"></div>
             </br>
-            <button onclick="getDataJson()">Click for messages:</button>
             <ul id="json-holder"></ul>
         </div>
 
         <form action="/data" method="POST">
 
-            <p>Enter a comment:</p>
+            <p>Post a comment:</p>
             <textarea name="text-input"></textarea>
             </br>
             <input type="submit">
             
         </form>
+
+        <p>How many comments to display:</p>
+        <input type="number" id="comment-number" min="0" max="10" value="1">
+        <button onclick="getDataJson()">Submit</button>
+        <p>Delete all comments:</p>
+        <button onclick="deleteComments()">Delete</button>
+
     </body>
 </html>
