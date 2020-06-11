@@ -71,36 +71,34 @@ async function deleteComments() {
     const data_post = await fetch('/delete-data', {method:'POST'});
 
     // Removes comments from the webpage.
-    document.getElementById('json-holder').innerHTML = ''
-
-
+    document.getElementById('json-holder').innerHTML = '';
 }
 
 function drawChart() {
-    const data = new google.visualization.DataTable();
-    data.addColumn('string', 'Solar System');
-    data.addColumn('number', 'Number of Planets');
-        data.addRows([
-            ['Sol', 8],
-            ['Gliese 581', 3],
-            ['TRAPPIST-1', 7]
-        ]);
-    
-    const options = {
-        'title': 'List of some Planetary Systems',
-        'chart area': {width: '50%'},
-        'hAxis' : {
-            'title' : 'Number of Planets',
-            'minValue' : 0
-        },
-        'vAxis' : {
-            'title' : 'Name of Star System'
-        },
-        'width': 500,
-        'height': 400
-    };
+    fetch('/prime-num-data').then(response => response.json())
+    .then((primeNumbers) => {
+        const data = new google.visualization.DataTable();
+        data.addColumn('string', 'Value Number');
+        data.addColumn('number', 'Prime Number');
+        Object.keys(primeNumbers).forEach((valueNumber) => {
+            data.addRow([valueNumber, primeNumbers[valueNumber]]);
+        });
 
-    const chart = new google.visualization.BarChart (
-        document.getElementById('chart-holder'));
-    chart.draw(data, options);
+        const options = {
+            'title' : 'Prime Numbers',
+            'hAxis' : {
+                'title' : 'Value Number'
+            },
+            'vAxis' : {
+                'title' : 'Prime Number'
+            },
+            'curveType' : 'Function',
+            'width' : 900,
+            'height' : 500
+        };
+
+        const chart = new google.visualization.LineChart(
+            document.getElementById('chart-holder'));
+        chart.draw(data, options);
+    });
 }
